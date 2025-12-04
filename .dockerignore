@@ -1,0 +1,37 @@
+# --- Git ---
+.git
+.gitignore
+
+# --- Python (dentro de app y raíz) ---
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+# Ignorar venv si está en la raíz o en app
+venv/
+.venv/
+env/
+app/venv/
+app/.venv/
+
+# --- Variables de Entorno ---
+.env
+.env.local
+
+# --- Node.js (¡CRÍTICO!) ---
+# Ignoramos la carpeta dentro de app para que no se suba la de Windows
+app/node_modules/
+**/node_modules/
+app/npm-debug.log
+
+# --- Docker ---
+docker/
+docker-compose.yml
+.dockerignore
+
+# --- Archivos Estáticos y Media ---
+app/media/
+app/staticfiles/
+
+# --- IDEs ---
+.vscode/
+.idea/

@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Panel de Control - SCA-B123{% endblock title %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-10">
+
+    <!-- Header Section -->
+    <div class="sm:flex sm:items-center sm:justify-between mb-8">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                    <svg class="text-white" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Panel de Control</h1>
+            </div>
+            <!-- Bienvenida + Badge de Rol -->
+            <div class="ml-[60px] mt-1 flex items-center gap-3">
+                <p class="text-sm text-gray-600">
+                    Bienvenido, <span class="font-semibold text-indigo-600">{{ user.username|title }}</span>
+                </p>               
+            </div>
+        
+        </div>
+        
+        <div class="mt-4 sm:mt-0 flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-gray-200">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span class="text-sm font-medium text-gray-700">Sistema Activo</span>
+        </div>
+    </div>
+
+    {% if dia_inhabil %}
+    <div class="mb-8 p-5 rounded-xl border border-amber-300 bg-gradient-to-r from-amber-50 to-amber-100 shadow-sm">
+        <div class="flex items-center gap-4">
+            
+            <div class="h-12 w-12 flex items-center justify-center rounded-lg bg-amber-200 text-amber-700 shadow-inner">
+                <svg style="width: 26px; height: 26px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+
+            <div class="flex-1">
+                <h2 class="text-lg font-bold text-amber-900">
+                    Hoy es un día inhábil
+                </h2>
+                <p class="text-sm text-amber-800 mt-1">
+                    {{ dia_inhabil.descripcion }}
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-4 text-sm text-amber-700">
+            No se registran asistencias ni retardos en días inhábiles.  
+            <br />
+            Las tarjetas de asistencia se ajustan automáticamente.
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+        <!-- Personal Activo (Visible para ADMIN y JEFE) -->
+        {% if es_admin or es_jefe %}
+        <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-medium text-blue-600 uppercase tracking-wider">Personal Activo</p>
+                    <p class="text-3xl font-bold text-blue-900 mt-2">{{ total_trabajadores }}</p>
+                    <p class="text-xs text-blue-700 mt-1 font-medium">Total registrado</p>
+                </div>
+                <div class="h-14 w-14 bg-blue-200 rounded-xl flex items-center justify-center shadow-inner">
+                    <svg class="text-blue-600" style="width: 28px; height: 28px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="mt-4 flex items-center text-blue-700 text-sm font-medium hover:text-blue-800 group">
+                <a href="{% url 'workers:trabajador_list' %}" 
+                class="flex items-center gap-1 hover:gap-2 transition-all">
+                    Ver directorio
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Asistencias Hoy (Visible para ADMIN y JEFE) -->
+        {% if es_admin or es_jefe %}
+            {% if not dia_inhabil %}
+                <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-emerald-600 uppercase tracking-wider">Asistencias Hoy</p>
+                            <p class="text-3xl font-bold text-emerald-900 mt-2">{{ total_asistencias }}</p>
+                            <p class="text-xs text-emerald-700 mt-1 font-medium">Registros del día</p>
+                        </div>
+                        <div class="h-14 w-14 bg-emerald-200 rounded-xl flex items-center justify-center shadow-inner">
+                            <svg class="text-emerald-600" style="width: 28px; height: 28px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-emerald-700 text-sm font-medium hover:text-emerald-800 group">
+                        <a href="{% url 'attendance:asistencia_list' %}"
+                        class="flex items-center gap-1 hover:gap-2 transition-all">
+                            Ver detalle diario
+                            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}   
+
+        <!-- Incidencias Pendientes (ADMIN y JEFE) -->
+        {% if es_admin or es_jefe %}
+        <div class="bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-medium text-amber-600 uppercase tracking-wider">Incidencias Pendientes</p>
+                    <p class="text-3xl font-bold text-amber-900 mt-2">{{ total_incidencias }}</p>
+                    <p class="text-xs text-amber-700 mt-1 font-medium">Requieren atención</p>
+                </div>
+                <div class="h-14 w-14 bg-amber-200 rounded-xl flex items-center justify-center shadow-inner">
+                    <svg class="text-amber-600" style="width: 28px; height: 28px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="mt-4 flex items-center text-amber-700 text-sm font-medium hover:text-amber-800 group">
+                <a href="{% url 'incidents:incidencia_list' %}"
+                class="flex items-center gap-1 hover:gap-2 transition-all">
+                    Gestionar incidencias
+                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Chart Section -->
+        <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800">Resumen Semanal de Asistencia</h3>
+                        <p class="text-xs text-gray-500 mt-1">Porcentaje de asistencia por día</p>
+                    </div>
+                    <form method="GET" id="semanaForm">
+                        <select name="semana" 
+                                onchange="this.form.submit()" 
+                                class="text-sm border-gray-300 rounded-lg text-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm cursor-pointer hover:border-indigo-300 transition-colors">
+                            <option value="esta_semana" {% if semana_seleccionada == 'esta_semana' %}selected{% endif %}>Esta semana</option>
+                            <option value="semana_pasada" {% if semana_seleccionada == 'semana_pasada' %}selected{% endif %}>Semana pasada</option>
+                            <option value="hace_dos_semanas" {% if semana_seleccionada == 'hace_dos_semanas' %}selected{% endif %}>Hace 2 semanas</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="relative h-72 w-full">
+                    <canvas id="chartAsistencia"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules Section -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden flex flex-col">
+            <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                <h3 class="text-lg font-bold text-gray-800">Módulos del Sistema</h3>
+                <p class="text-xs text-gray-500 mt-1">Accesos rápidos</p>
+            </div>
+            <div class="p-4 flex-1 overflow-y-auto max-h-[500px]">
+                <nav class="space-y-2">
+
+                    <!-- Gestión de Usuarios (solo ADMIN) -->
+                    {% if es_admin %}
+                    <a href="{% url 'perfil_list' %}" class="flex items-center p-3 rounded-xl hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-100 group transition-all duration-200 border border-transparent hover:border-indigo-200 hover:shadow-md mt-2 pt-4 border-t-2">
+                        <div class="h-11 w-11 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-sm group-hover:scale-110">
+                            <svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <span class="block text-sm font-bold text-gray-700 group-hover:text-indigo-700 transition-colors">Gestionar Usuarios</span>
+                            <span class="text-xs text-gray-500">Administración del sistema</span>
+                        </div>
+                        <svg class="text-gray-400 group-hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    {% endif %}  
+                    
+                    <!-- Trabajadores (ADMIN o JEFE) -->
+                    {% if es_admin or es_jefe %}
+                    <a href="{% url 'workers:trabajador_list' %}" 
+                    class="flex items-center p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 group transition-all duration-200 border border-transparent hover:border-blue-200 hover:shadow-md">
+                        <div class="h-11 w-11 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mr-3 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm group-hover:scale-110">
+                            <svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <span class="block text-sm font-bold text-gray-700 group-hover:text-blue-700 transition-colors">Trabajadores</span>
+                            <span class="text-xs text-gray-500">Gestión del personal activo y asignación de horarios.</span>
+                        </div>
+                        <svg class="text-gray-400 group-hover:text-blue-600 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+
+                    <!-- Asistencias -->                    
+                    <a href="{% url 'attendance:asistencia_list' %}"
+                        class="flex items-center p-3 rounded-xl hover:bg-gradient-to-r hover:from-emerald-50 hover:to-emerald-100 group transition-all duration-200 border border-transparent hover:border-emerald-200 hover:shadow-md">
+                        
+                        <div class="h-11 w-11 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mr-3 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm group-hover:scale-110">
+                            <svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2
+                                        0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2
+                                        0 002 2h2a2 2 0 002-2M9 5a2 2 0
+                                        012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            </svg>
+                        </div>
+
+                        <div class="flex-1">
+                            <span class="block text-sm font-bold text-gray-700 group-hover:text-emerald-700 transition-colors">
+                                Asistencias
+                            </span>
+                            <span class="text-xs text-gray-500">Consulta y administra las asistencias del personal.</span>
+                        </div>
+
+                        <svg class="text-gray-400 group-hover:text-emerald-600 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                            style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+
+                    <!-- Incidencias (todos los roles, con URL según rol) -->
+                    <a href="{% url 'incidents:incidencia_list' %}"
+                    class="flex items-center p-3 rounded-xl hover:bg-gradient-to-r hover:from-amber-50 hover:to-amber-100 group transition-all duration-200 border border-transparent hover:border-amber-200 hover:shadow-md">
+
+                        <div class="h-11 w-11 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center mr-3 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-sm group-hover:scale-110">
+                            <svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 
+                                        1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 
+                                        16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+
+                        <div class="flex-1">
+                            <span class="block text-sm font-bold text-gray-700 group-hover:text-amber-700 transition-colors">
+                                Incidencias
+                            </span>
+                            <span class="text-xs text-gray-500">Permisos, incapacidades y justificaciones</span>
+                        </div>
+
+                        <svg class="text-gray-400 group-hover:text-amber-600 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                            style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+
+                    <!-- Jornadas Laborales (solo ADMIN) -->
+                    {% if es_admin %}
+                    <a href="{% url 'workers:jornada_list' %}" 
+                    class="flex items-center p-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 group transition-all duration-200 border border-transparent hover:border-purple-200 hover:shadow-md">
+                        <div class="h-11 w-11 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mr-3 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-sm group-hover:scale-110">
+                            <svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <span class="block text-sm font-bold text-gray-700 group-hover:text-purple-700 transition-colors">Jornadas y Horarios</span>
+                            <span class="text-xs text-gray-500">Asignación de turnos</span>
+                        </div>
+                        <svg class="text-gray-400 group-hover:text-purple-600 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+
+                    <!-- Catálogos Core (solo ADMIN) -->
+                    {% if es_admin %}
+                    <a href="{% url 'core:core_dashboard' %}" 
+                    class="flex items-center p-3 rounded-xl hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 group transition-all duration-200 border border-transparent hover:border-gray-200 hover:shadow-md">
+                        <div class="h-11 w-11 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center mr-3 group-hover:bg-gray-600 group-hover:text-white transition-all shadow-sm group-hover:scale-110">
+                            <svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <span class="block text-sm font-bold text-gray-700 group-hover:text-gray-900 transition-colors">Catálogos (Core)</span>
+                            <span class="text-xs text-gray-500">Unidades, Puestos, etc.</span>
+                        </div>
+                        <svg class="text-gray-400 group-hover:text-gray-600 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                    
+                    <!-- Reportes (todos) -->
+                    <a href="{% url 'reports:dashboard_reportes' %}" 
+                    class="flex items-center p-3 rounded-xl hover:bg-gradient-to-r hover:from-pink-50 hover:to-pink-100 group transition-all duration-200 border border-transparent hover:border-pink-200 hover:shadow-md">
+                        <div class="h-11 w-11 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center mr-3 group-hover:bg-pink-600 group-hover:text-white transition-all shadow-sm group-hover:scale-110">
+                            <svg style="width: 22px; height: 22px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <span class="block text-sm font-bold text-gray-700 group-hover:text-pink-700 transition-colors">Reportes</span>
+                            <span class="text-xs text-gray-500">Estadísticas y descargas</span>
+                        </div>
+                        <svg class="text-gray-400 group-hover:text-pink-600 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>                           
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('chartAsistencia').getContext('2d');
+        
+        // Gradiente mejorado
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.9)');
+        gradient.addColorStop(1, 'rgba(168, 85, 247, 0.5)');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ chart_labels|safe }},
+                datasets: [{
+                    label: 'Asistencia (%)',
+                    data: {{ chart_data|safe }},
+                    backgroundColor: gradient,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                    barThickness: 35,
+                    hoverBackgroundColor: 'rgba(79, 70, 229, 0.95)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { 
+                        display: false 
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                        padding: 12,
+                        cornerRadius: 8,
+                        titleColor: '#fff',
+                        bodyColor: '#e5e7eb',
+                        borderColor: 'rgba(99, 102, 241, 0.5)',
+                        borderWidth: 1,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + '% de asistencia';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { 
+                            color: '#f3f4f6',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            },
+                            color: '#6b7280',
+                            font: {
+                                size: 11,
+                                weight: '500'
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { 
+                            display: false 
+                        },
+                        ticks: {
+                            color: '#6b7280',
+                            font: {
+                                size: 11,
+                                weight: '600'
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

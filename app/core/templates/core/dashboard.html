@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block title %}Administración de Catálogos - SCA-B123{% endblock title %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-10">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-10">
+        <div class="mb-3">
+                <a href="{% url 'dashboard' %}" 
+                class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors group">
+                    <svg class="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Volver al Dashboard
+                </a>
+            </div>
+        <div class="inline-flex items-center justify-center mb-4">
+            <div class="h-16 w-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg">
+                <svg class="text-white" style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+        </div>
+        <h1 class="text-4xl font-bold text-gray-900 tracking-tight mb-3">
+            Configuración del Sistema
+        </h1>
+        <p class="max-w-3xl mx-auto text-lg text-gray-600">
+            Administra los catálogos base, definiciones de puestos y tipos de incidencias para el control de asistencia.
+        </p>
+    </div>    
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+        <!-- Card: Catálogo de Puestos -->
+        <a href="{% url 'core:puesto_list' %}" 
+           class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 overflow-hidden">
+            
+            <!-- Gradient Background -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400 to-cyan-500 opacity-10 rounded-bl-full transform group-hover:scale-150 transition-transform duration-500"></div>
+            
+            <div class="p-6 relative z-10">
+                <!-- Icon -->
+                <div class="inline-flex p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg group-hover:shadow-xl transition-shadow ring-4 ring-blue-100">
+                    <svg class="text-white" style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+
+                <!-- Content -->
+                <div class="mt-5">
+                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors mb-2">
+                        Catálogo de Puestos
+                    </h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Gestiona los cargos, niveles jerárquicos (Directivo, Docente, Apoyo) y perfiles de puesto.
+                    </p>
+                </div>
+
+                <!-- Action Arrow -->
+                <div class="mt-4 flex items-center text-blue-600 text-sm font-semibold group-hover:text-blue-700">
+                    <span>Administrar puestos</span>
+                    <svg class="ml-2 transform group-hover:translate-x-2 transition-transform" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Decorative Corner -->
+            <div class="absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg class="text-blue-100" style="width: 80px; height: 80px;" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"/>
+                </svg>
+            </div>
+        </a>
+
+        <!-- Card: Tipos de Nombramiento -->
+        <a href="{% url 'core:nombramiento_list' %}" 
+           class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 overflow-hidden">
+            
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400 to-teal-500 opacity-10 rounded-bl-full transform group-hover:scale-150 transition-transform duration-500"></div>
+            
+            <div class="p-6 relative z-10">
+                <div class="inline-flex p-4 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg group-hover:shadow-xl transition-shadow ring-4 ring-emerald-100">
+                    <svg class="text-white" style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+
+                <div class="mt-5">
+                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-emerald-700 transition-colors mb-2">
+                        Tipos de Nombramiento
+                    </h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Define las relaciones laborales (Base, Confianza, Interinato) para los contratos del personal.
+                    </p>
+                </div>
+
+                <div class="mt-4 flex items-center text-emerald-600 text-sm font-semibold group-hover:text-emerald-700">
+                    <span>Administrar nombramientos</span>
+                    <svg class="ml-2 transform group-hover:translate-x-2 transition-transform" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg class="text-emerald-100" style="width: 80px; height: 80px;" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"/>
+                </svg>
+            </div>
+        </a>
+
+        <!-- Card: Tipos de Incidencia -->
+        <a href="{% url 'core:tipo_incidencia_list' %}" 
+           class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 overflow-hidden">
+            
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-400 to-orange-500 opacity-10 rounded-bl-full transform group-hover:scale-150 transition-transform duration-500"></div>
+            
+            <div class="p-6 relative z-10">
+                <div class="inline-flex p-4 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg group-hover:shadow-xl transition-shadow ring-4 ring-amber-100">
+                    <svg class="text-white" style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+
+                <div class="mt-5">
+                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-amber-700 transition-colors mb-2">
+                        Tipos de Incidencia
+                    </h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Configura las categorías para justificaciones, permisos económicos, incapacidades y faltas.
+                    </p>
+                </div>
+
+                <div class="mt-4 flex items-center text-amber-600 text-sm font-semibold group-hover:text-amber-700">
+                    <span>Administrar incidencias</span>
+                    <svg class="ml-2 transform group-hover:translate-x-2 transition-transform" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg class="text-amber-100" style="width: 80px; height: 80px;" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"/>
+                </svg>
+            </div>
+        </a>
+
+        <!-- Card: Unidades Administrativas -->
+        <a href="{% url 'core:unidad_list' %}" 
+        class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-purple-200 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-600 opacity-10 rounded-bl-full transform group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="p-6 relative z-10">
+                <div class="inline-flex p-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 shadow-lg group-hover:shadow-xl transition-shadow ring-4 ring-purple-100">
+                    <svg class="text-white" style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+
+                <div class="mt-5">
+                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors mb-2">
+                        Unidades Administrativas
+                    </h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Estructura jerárquica de departamentos, áreas y divisiones de la institución.
+                    </p>
+                </div>
+                <div class="mt-4 flex items-center text-purple-600 text-sm font-semibold group-hover:text-purple-700">
+                    <span>Administrar unidades</span>
+                    <svg class="ml-2 transform group-hover:translate-x-2 transition-transform" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg class="text-purple-100" style="width: 80px; height: 80px;" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"/>
+                </svg>
+            </div>
+        </a>
+
+        <a href="{% url 'core:calendario_list' %}" 
+        class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-cyan-200 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-400 to-teal-500 opacity-10 rounded-bl-full transform group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="p-6 relative z-10">
+                <div class="inline-flex p-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg group-hover:shadow-xl transition-shadow ring-4 ring-cyan-100">
+                    <svg class="text-white" style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+
+                <div class="mt-5">
+                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-cyan-700 transition-colors mb-2">
+                        Calendario Laboral
+                    </h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Define periodos de trabajo, días festivos y horarios especiales para el control de asistencias.
+                    </p>
+                </div>
+                <div class="mt-4 flex items-center text-cyan-600 text-sm font-semibold group-hover:text-cyan-700">
+                    <span>Administrar calendarios</span>
+                    <svg class="ml-2 transform group-hover:translate-x-2 transition-transform" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="absolute bottom-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg class="text-cyan-100" style="width: 80px; height: 80px;" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z"/>
+                </svg>
+            </div>
+        </a>
+
+        <!-- Card: Más Módulos (Placeholder) -->
+        <div class="group relative bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl shadow-md border-2 border-dashed border-purple-300 overflow-hidden">
+            <div class="p-6 relative z-10">
+                <div class="inline-flex p-4 rounded-2xl bg-purple-200 ring-4 ring-purple-100 opacity-60">
+                    <svg class="text-purple-500" style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                    </svg>
+                </div>
+
+                <div class="mt-5">
+                    <div class="flex items-center gap-2 mb-2">
+                        <h3 class="text-xl font-bold text-purple-600">
+                            Catálogos Adicionales
+                        </h3>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Más opciones de configuración estarán disponibles próximamente.
+                    </p>
+                </div>
+
+                <!--<div class="mt-4 flex items-center text-purple-500 text-sm font-semibold">
+                    <svg class="mr-2" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>Agregar nuevos catálogos</span>
+                </div>-->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Info Box -->
+    <div class="mt-10 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-6 shadow-sm">
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+                <svg class="text-indigo-600" style="width: 24px; height: 24px;" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-base font-bold text-indigo-900 mb-2">📚 Información importante</h3>
+                <ul class="space-y-2 text-sm text-indigo-800">
+                    <li class="flex items-start gap-2">
+                        <svg class="flex-shrink-0 mt-0.5" style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Los catálogos son la base para el registro de trabajadores y control de asistencias.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <svg class="flex-shrink-0 mt-0.5" style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Configura estos valores antes de comenzar a dar de alta al personal.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <svg class="flex-shrink-0 mt-0.5" style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Puedes modificar los catálogos en cualquier momento sin afectar registros anteriores.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

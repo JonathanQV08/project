@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Incidencia - SCA-B123{% endblock %}
+
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center px-4 py-12">
+    <div class="max-w-2xl w-full">
+
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+
+            <!-- Header -->
+            <div class="bg-gradient-to-br from-rose-50 to-pink-50 px-6 pt-8 pb-6 border-b border-rose-100">
+                <div class="flex items-center justify-between mb-4">
+                    <a href="{% url 'incidents:incidencia_list' %}"
+                       class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-rose-600 transition-colors group">
+                        <svg class="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Volver a la lista
+                    </a>
+                    
+                    <!-- Badge de estatus -->
+                    {% if incidencia.estatus == "PENDIENTE" %}
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300 shadow-sm">
+                            <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                            </svg>
+                            Pendiente
+                        </span>
+                    {% elif incidencia.estatus == "APROBADA" %}
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm">
+                            <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            Aprobada
+                        </span>
+                    {% else %}
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-100 text-red-800 border border-red-300 shadow-sm">
+                            <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                            Rechazada
+                        </span>
+                    {% endif %}
+                </div>
+                
+                <div class="text-center">
+                    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-white shadow-lg mb-4">
+                        <div class="h-14 w-14 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
+                            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                        Detalle de Incidencia
+                    </h3>
+                    <p class="text-sm text-gray-600">
+                        Información completa del registro
+                    </p>
+                </div>
+            </div>
+
+            <!-- Info Block -->
+            <div class="px-6 py-6 space-y-4">
+
+                <!-- Trabajador -->
+                <div class="bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-xl p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center text-white font-bold shadow-md">
+                                {{ incidencia.trabajador.nombre|slice:":1" }}{{ incidencia.trabajador.apellido_paterno|slice:":1" }}
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-xs text-rose-600 uppercase tracking-wider font-medium mb-1">
+                                Trabajador
+                            </p>
+                            <p class="text-base font-bold text-gray-900">
+                                {{ incidencia.trabajador }}
+                            </p>
+                            <p class="text-xs text-gray-600 mt-1">
+                                No. Empleado: {{ incidencia.trabajador.numero_empleado }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tipo de Incidencia -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="text-gray-400" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                        </svg>
+                        <p class="text-xs text-gray-500 uppercase tracking-wider font-medium">
+                            Tipo de Incidencia
+                        </p>
+                    </div>
+                    <p class="text-lg font-bold text-gray-900">
+                        {{ incidencia.tipo.descripcion }}
+                    </p>
+                    {% if incidencia.tipo.afecta_nomina %}
+                    <div class="mt-2 flex items-center gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-orange-100 text-orange-800 border border-orange-300">
+                            <svg style="width: 12px; height: 12px;" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            Afecta nómina
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Periodo -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Fecha Inicio -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="text-gray-400" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <p class="text-xs text-gray-500 uppercase tracking-wider font-medium">
+                                Fecha Inicio
+                            </p>
+                        </div>
+                        <p class="text-lg font-bold text-gray-900">
+                            {{ incidencia.fecha_inicio|date:"d/m/Y" }}
+                        </p>
+                        <p class="text-xs text-gray-600 mt-1">
+                            {{ incidencia.fecha_inicio|date:"l" }}
+                        </p>
+                    </div>
+
+                    <!-- Fecha Fin -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="text-gray-400" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <p class="text-xs text-gray-500 uppercase tracking-wider font-medium">
+                                Fecha Fin
+                            </p>
+                        </div>
+                        <p class="text-lg font-bold text-gray-900">
+                            {{ incidencia.fecha_fin|date:"d/m/Y" }}
+                        </p>
+                        <p class="text-xs text-gray-600 mt-1">
+                            {{ incidencia.fecha_fin|date:"l" }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Duración -->
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-4 text-center">
+                    <p class="text-xs text-indigo-600 uppercase tracking-wider font-medium mb-2">
+                        Duración del periodo
+                    </p>
+                    <p class="text-3xl font-bold text-indigo-700">
+                        {{ duracion_dias }} día(s)
+                    </p>
+                </div>
+
+                <!-- Motivo -->
+                {% if incidencia.motivo %}
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                    <div class="flex items-start gap-2 mb-2">
+                        <svg class="text-gray-400 mt-0.5" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                        </svg>
+                        <p class="text-xs text-gray-500 uppercase tracking-wider font-medium">
+                            Motivo
+                        </p>
+                    </div>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        {{ incidencia.motivo }}
+                    </p>
+                </div>
+                {% endif %}
+
+                <!-- Información de aprobación -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% if incidencia.created_by %}
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider font-medium mb-2">
+                            Creada por
+                        </p>
+                        <p class="text-sm font-semibold text-gray-900">
+                            {{ incidencia.created_by.get_full_name|default:incidencia.created_by.username }}
+                        </p>
+                        <p class="text-xs text-gray-600 mt-1">
+                            {{ incidencia.created_at|date:"d/m/Y H:i" }}
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    {% if incidencia.aprobada_por %}
+                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider font-medium mb-2">
+                            Aprobada por
+                        </p>
+                        <p class="text-sm font-semibold text-gray-900">
+                            {{ incidencia.aprobada_por.get_full_name|default:incidencia.aprobada_por.username }}
+                        </p>
+                        <p class="text-xs text-gray-600 mt-1">
+                            {{ incidencia.actualizado_en|date:"d/m/Y H:i" }}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="px-6 pb-6 flex gap-3">
+                <a href="{% url 'incidents:incidencia_list' %}"
+                   class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white text-gray-700 border-2 border-gray-300 rounded-xl hover:bg-gray-50 text-sm font-semibold transition-all hover:shadow-md">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Regresar
+                </a>
+                
+                <a href="{% url 'incidents:incidencia_update' incidencia.pk %}"
+                   class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-rose-600 to-pink-600 text-white rounded-xl hover:from-rose-700 hover:to-pink-700 text-sm font-semibold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    Editar
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Info Card -->
+        <div class="mt-4 bg-rose-50 border border-rose-200 rounded-xl p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="text-rose-600" style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div class="ml-3 flex-1">
+                    <h3 class="text-sm font-semibold text-rose-900">Gestión de incidencias</h3>
+                    <div class="mt-2 text-xs text-rose-800">
+                        <p>Las incidencias aprobadas se aplican automáticamente a los registros de asistencia del trabajador en el periodo especificado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

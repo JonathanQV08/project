@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Incidencias - SCA-B123{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-10">
+
+    <!-- HEADER -->
+    <div class="sm:flex sm:items-center sm:justify-between mb-8">
+        <div>
+            <!-- Botón de regreso -->
+            <div class="mb-3">
+                <a href="{% url 'dashboard' %}"
+                   class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-rose-600 transition-colors group">
+                    <svg class="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Volver al Dashboard
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3 mb-2">
+                <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-lg">
+                    <svg class="text-white" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Gestión de Incidencias</h1>
+            </div>
+
+            <p class="mt-1 text-sm text-gray-600 ml-[60px]">
+                Administra las solicitudes de incidencias del personal.
+            </p>
+        </div>
+
+        <div class="mt-4 sm:mt-0">
+            <a href="{% url 'incidents:incidencia_create' %}"
+               class="inline-flex items-center px-5 py-2.5 rounded-xl text-sm font-semibold text-white shadow-md
+                      bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700
+                      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500
+                      transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5">
+                <svg class="-ml-1 mr-2" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Nueva Incidencia
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+
+        <!-- Pendientes -->
+        <div class="bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-medium text-amber-600 uppercase tracking-wider">Pendientes</p>
+                    <p class="text-2xl font-bold text-amber-900 mt-1">{{ total_pendientes }}</p>
+                </div>
+                <div class="h-12 w-12 bg-amber-200 rounded-lg flex items-center justify-center">
+                    <svg class="text-amber-600" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aprobadas -->
+        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-medium text-emerald-600 uppercase tracking-wider">Aprobadas</p>
+                    <p class="text-2xl font-bold text-emerald-900 mt-1">{{ total_aprobadas }}</p>
+                </div>
+                <div class="h-12 w-12 bg-emerald-200 rounded-lg flex items-center justify-center">
+                    <svg class="text-emerald-600" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rechazadas -->
+        <div class="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-medium text-red-600 uppercase tracking-wider">Rechazadas</p>
+                    <p class="text-2xl font-bold text-red-900 mt-1">{{ total_rechazadas }}</p>
+                </div>
+                <div class="h-12 w-12 bg-red-200 rounded-lg flex items-center justify-center">
+                    <svg class="text-red-600" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Filtros -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+        <form method="get" class="flex items-center gap-3">
+            <label class="text-sm font-semibold text-gray-700">Filtrar por estado:</label>
+            <select name="estatus" onchange="this.form.submit()" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:border-transparent">
+                <option value="">Todos</option>
+                <option value="PENDIENTE" {% if request.GET.estatus == 'PENDIENTE' %}selected{% endif %}>Pendientes</option>
+                <option value="APROBADA" {% if request.GET.estatus == 'APROBADA' %}selected{% endif %}>Aprobadas</option>
+                <option value="RECHAZADA" {% if request.GET.estatus == 'RECHAZADA' %}selected{% endif %}>Rechazadas</option>
+            </select>
+        </form>
+    </div>
+
+    <!-- TABLA -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Trabajador</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tipo</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Periodo</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-100">
+                    {% for inc in incidencias %}
+                    <tr class="group hover:bg-gradient-to-r hover:from-rose-50 hover:to-pink-50 transition-all duration-200">
+                        
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <span class="h-10 w-10 rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center text-white font-bold shadow-md text-sm group-hover:scale-110 transition-transform duration-200">
+                                        {{ inc.trabajador.nombre|slice:":1" }}{{ inc.trabajador.apellido_paterno|slice:":1" }}
+                                    </span>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-semibold text-gray-900 group-hover:text-rose-700 transition-colors">
+                                        {{ inc.trabajador }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="px-6 py-5 text-sm text-gray-700">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200">
+                                {{ inc.tipo.descripcion }}
+                            </span>
+                        </td>
+
+                        <td class="px-6 py-5 text-sm text-gray-600">
+                            {{ inc.fecha_inicio|date:"d/m/Y" }} - {{ inc.fecha_fin|date:"d/m/Y" }}
+                        </td>
+
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            {% if inc.estatus == "PENDIENTE" %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">
+                                    <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Pendiente
+                                </span>
+                            {% elif inc.estatus == "APROBADA" %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                    <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Aprobada
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-100 text-red-800 border border-red-300">
+                                    <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Rechazada
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td class="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex justify-end items-center gap-2">
+                                <a href="{% url 'incidents:incidencia_detail' inc.pk %}"
+                                   class="text-purple-600 hover:text-purple-900 p-2 hover:bg-purple-100 rounded-lg transition-all duration-200 hover:shadow-md"
+                                   title="Ver detalle">
+                                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </a>
+                                
+                                <a href="{% url 'incidents:incidencia_update' inc.pk %}"
+                                   class="text-rose-600 hover:text-rose-900 p-2 hover:bg-rose-100 rounded-lg transition-all duration-200 hover:shadow-md"
+                                   title="Editar">
+                                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-16 text-center">
+                            <div class="mx-auto flex justify-center text-gray-300 mb-4">
+                                <svg style="width: 64px; height: 64px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                            </div>
+                            <p class="text-base font-medium text-gray-700">No hay incidencias registradas</p>
+                            <p class="mt-1 text-sm text-gray-500">Comienza agregando la primera incidencia</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Info Box -->
+    <div class="mt-6 bg-rose-50 border border-rose-200 rounded-xl p-4">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="text-rose-600" style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <div class="ml-3 flex-1">
+                <h3 class="text-sm font-semibold text-rose-900">Gestión de incidencias</h3>
+                <div class="mt-2 text-xs text-rose-800">
+                    <p>Las incidencias aprobadas se aplicarán automáticamente a los registros de asistencia del trabajador.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

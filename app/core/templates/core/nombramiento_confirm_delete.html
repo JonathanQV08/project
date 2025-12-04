@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Tipo de Nombramiento - SCA-B123{% endblock title %}
+
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center px-4 py-12">
+    <div class="max-w-md w-full">
+        
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+            
+            <div class="bg-gradient-to-br from-red-50 to-rose-50 px-6 pt-8 pb-6 text-center border-b border-red-100">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 shadow-lg mb-4 animate-pulse">
+                    <svg class="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">¿Confirmar eliminación?</h3>
+                <p class="text-sm text-gray-600">
+                    Esta acción es permanente y no se puede deshacer
+                </p>
+            </div>
+            
+            <div class="px-6 py-6">
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0 mt-0.5">
+                            <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold shadow-md">
+                                {{ object.descripcion|slice:":2"|upper }}
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">
+                                Tipo a eliminar
+                            </p>
+                            <p class="text-base font-bold text-gray-900 truncate">
+                                {{ object.descripcion }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-start gap-2 text-xs text-gray-600">
+                        <svg class="text-amber-500 mt-0.5 flex-shrink-0" style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Los trabajadores con este nombramiento quedarán sin clasificar.</span>
+                    </div>
+                    <div class="flex items-start gap-2 text-xs text-gray-600">
+                        <svg class="text-amber-500 mt-0.5 flex-shrink-0" style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Esta acción puede afectar reportes y estadísticas.</span>
+                    </div>
+                </div>
+                
+                <form method="post" class="space-y-3">
+                    {% csrf_token %}
+                    
+                    <button type="submit" 
+                            class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-xl hover:from-red-700 hover:to-rose-700 text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        Sí, eliminar definitivamente
+                    </button>
+                    
+                    <a href="{% url 'core:nombramiento_list' %}" 
+                       class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white text-gray-700 border-2 border-gray-300 rounded-xl hover:bg-gray-50 text-sm font-semibold transition-all duration-200 hover:border-gray-400">
+                        <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        No, regresar a la lista
+                    </a>
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-4 text-center">
+            <p class="text-xs text-gray-500">
+                💡 Consejo: Considera mantener los registros históricos
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: .8; }
+    }
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+</style>
+{% endblock content %}

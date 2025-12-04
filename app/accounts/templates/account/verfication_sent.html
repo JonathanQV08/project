@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Verificación enviada{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 text-center">
+    <div class="bg-white p-8 rounded-xl shadow">
+        <!-- Icono de correo -->
+        <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mb-4">
+            <svg class="h-8 w-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Verifica tu correo electrónico</h2>
+
+        <p class="mb-6 text-gray-600 text-sm">
+            Hemos enviado un correo de verificación a <strong>{{ email }}</strong>. 
+            Por favor, haz clic en el enlace del correo para confirmar tu dirección.
+        </p>
+
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <p class="text-sm text-yellow-800">
+                <strong>Nota:</strong> Si no recibes el correo en unos minutos, revisa tu carpeta de spam.
+            </p>
+        </div>
+
+        <a href="{% url 'dashboard' %}" 
+           class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition">
+            Ir al dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

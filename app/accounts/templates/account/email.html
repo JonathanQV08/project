@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Gestionar emails{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-10">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Gestionar direcciones de correo</h2>
+
+    <p class="text-gray-600 mb-8">
+        Puedes agregar direcciones de correo electrónico adicionales y establecer una como principal.
+    </p>
+
+    <!-- Lista de emails existentes -->
+    <div class="bg-white rounded-xl p-6 shadow border border-gray-100 mb-6">
+        <h3 class="text-xl font-semibold mb-4 text-gray-800">Tus direcciones de correo</h3>
+
+        {% if user.emailaddress_set.all %}
+            <div class="space-y-3">
+                {% for emailaddress in user.emailaddress_set.all %}
+                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-gray-700">{{ emailaddress.email }}</span>
+                        {% if emailaddress.primary %}
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2 py-1 rounded">Principal</span>
+                        {% endif %}
+                        {% if emailaddress.verified %}
+                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">Verificado</span>
+                        {% else %}
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded">Sin verificar</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex space-x-2">
+                        {% if not emailaddress.primary %}
+                        <form method="post" action="{% url 'account_email' %}" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="primary">
+                            <input type="hidden" name="email" value="{{ emailaddress.email }}">
+                            <button type="submit" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                Hacer principal
+                            </button>
+                        </form>
+                        {% endif %}
+
+                        {% if not emailaddress.verified %}
+                        <form method="post" action="{% url 'account_email' %}" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="send">
+                            <input type="hidden" name="email" value="{{ emailaddress.email }}">
+                            <button type="submit" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                Re-enviar verificación
+                            </button>
+                        </form>
+                        {% endif %}
+
+                        {% if not emailaddress.primary %}
+                        <form method="post" action="{% url 'account_email' %}" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="email" value="{{ emailaddress.email }}">
+                            <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                Eliminar
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500">No tienes direcciones de correo registradas.</p>
+        {% endif %}
+    </div>
+
+    <!-- Agregar nuevo email -->
+    <div class="bg-white rounded-xl p-6 shadow border border-gray-100">
+        <h3 class="text-xl font-semibold mb-4 text-gray-800">Agregar dirección de correo</h3>
+
+        <form method="post" action="{% url 'account_email' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add">
+
+            {% for field in form %}
+                <div class="mb-5">
+                    <label for="{{ field.id_for_label }}" class="block text-gray-700 font-semibold mb-2">
+                        {{ field.label }}
+                    </label>
+
+                    <div class="relative">
+                        {{ field }}
+                    </div>
+
+                    {% if field.help_text %}
+                        <p class="text-xs text-gray-500 mt-1">{{ field.help_text|safe }}</p>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <p class="text-sm text-red-500 mt-1">{{ field.errors|striptags }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const inputs = document.querySelectorAll("input[type='text'], input[type='email']");
+                    inputs.forEach(input => {
+                        input.classList.add(
+                            "w-full", "px-4", "py-3", "border", "border-gray-300",
+                            "rounded-lg", "focus:outline-none",
+                            "focus:ring-2", "focus:ring-indigo-500",
+                            "focus:border-indigo-500", "transition"
+                        );
+                    });
+                });
+            </script>
+
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition">
+                Agregar correo
+            </button>
+        </form>
+    </div>
+
+    <div class="mt-6 text-center">
+        <a href="{% url 'dashboard' %}" class="text-indigo-600 hover:text-indigo-700 font-medium">
+            Volver al dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

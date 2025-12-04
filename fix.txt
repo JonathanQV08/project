@@ -1,0 +1,14 @@
+Forms
+- Primero subir los cambios de la refactorización de los archivos
+
+Asistencias
+- Las cards de los stats no muestran datos reales
+
+Usuario
+- Falta habilitar el botón de eliminar
+
+Jornadas
+- La opción para asignar una jornada debo de quitarla de trabajadores
+
+Dashboard
+- Un trabajador/jefe debe poder ver la jornada que tiene asignada

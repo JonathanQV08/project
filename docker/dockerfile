@@ -1,0 +1,28 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    libpq-dev gcc curl gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar Node.js 20
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
+# 1. Copiamos requirements desde la RAÍZ (el contexto es ..)
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# 2. Copiamos package.json desde la carpeta "app/"
+COPY app/package.json app/package-lock.json* ./
+RUN npm install
+
+# 3. Copiamos el CÓDIGO de la carpeta "app/" al contenedor
+COPY app/ .
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

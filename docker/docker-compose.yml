@@ -1,0 +1,40 @@
+services:
+  web:
+    build:
+      context: ..              # El contexto sigue siendo la raíz del proyecto
+      dockerfile: docker/dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      # Montamos SOLO la carpeta "app" local en "/app" del contenedor
+      - ../app:/app
+      # Truco importante: Esto evita que tu carpeta local vacía (o de Windows)
+      # sobrescriba los node_modules instalados en Linux dentro del contenedor.
+      - /app/node_modules
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - mailhog
+    env_file:
+      - ../.env
+    environment:
+      - EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+      - EMAIL_HOST=mailhog
+      - EMAIL_PORT=1025
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ../.env
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

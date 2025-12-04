@@ -1,0 +1,51 @@
+# --- Python & Django ---
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.log
+local_settings.py
+
+# --- Base de Datos ---
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+
+# --- Testing & Coverage ---
+.coverage
+htmlcov/
+.pytest_cache/
+
+# --- Entorno Virtual ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Variables de Entorno y Secretos ---
+.env
+.env.local
+
+# --- Node.js & Tailwind ---
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+# Ignora el archivo CSS compilado por el script de build/dev en package.json
+static/src/output.css
+
+# --- IDEs y Editores ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Docker ---
+postgres_data/
+docker-logs/
+
+# --- Archivos Estáticos y Media ---
+media/
+staticfiles/

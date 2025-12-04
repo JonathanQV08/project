@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Mi Reporte Personal - SCA-B123{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-10">
+
+    <!-- HEADER -->
+    <div class="mb-8">
+        <!-- Botón de regreso -->
+        <div class="mb-3">
+            <a href="{% url 'reports:dashboard_reportes' %}"
+               class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-amber-600 transition-colors group">
+                <svg class="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Volver a Reportes
+            </a>
+        </div>
+
+        <div class="flex items-center gap-3 mb-2">
+            <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg">
+                <svg class="text-white" style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Mi Reporte Personal</h1>
+        </div>
+
+        <p class="mt-1 text-sm text-gray-600 ml-[60px]">
+            Consulta tu historial completo de asistencias.
+        </p>
+    </div>
+
+    <!-- Información del Usuario -->
+    {% if user.trabajador %}
+    <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6 mb-6 shadow-sm">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="h-16 w-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold shadow-lg text-xl">
+                    {{ user.trabajador.nombre|slice:":1" }}{{ user.trabajador.apellido_paterno|slice:":1" }}
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">
+                        {{ user.trabajador.nombre }} {{ user.trabajador.apellido_paterno }} {{ user.trabajador.apellido_materno }}
+                    </h2>
+                    <div class="flex items-center gap-4 mt-1">
+                        <p class="text-sm text-gray-600">
+                            <span class="font-semibold">No. Empleado:</span> {{ user.trabajador.numero_empleado }}
+                        </p>
+                        <p class="text-sm text-gray-600">
+                            <span class="font-semibold">Puesto:</span> {{ user.trabajador.puesto.nombre_puesto }}
+                        </p>
+                    </div>
+                    {% if user.trabajador.jornada_activa %}
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-teal-100 text-teal-800 border border-teal-300">
+                            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            {{ user.trabajador.jornada_activa.0.jornada.descripcion }}
+                        </span>
+                        <span class="text-xs text-gray-600">
+                            {{ user.trabajador.jornada_activa.0.jornada.hora_entrada|time:"H:i" }} - 
+                            {{ user.trabajador.jornada_activa.0.jornada.hora_salida|time:"H:i" }}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Formulario de Filtros (Opcional) -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden mb-6">
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 px-6 py-4 border-b border-amber-200">
+            <h2 class="text-lg font-bold text-amber-900 flex items-center gap-2">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                </svg>
+                Filtrar por rango de fechas
+            </h2>
+        </div>
+
+        <form method="get" class="p-6">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Fecha Inicio -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Fecha Inicio
+                    </label>
+                    <input type="date" name="fi"
+                           class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                           value="{{ fecha_inicio|date:'Y-m-d' }}">
+                </div>
+
+                <!-- Fecha Fin -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Fecha Fin
+                    </label>
+                    <input type="date" name="ff"
+                           class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                           value="{{ fecha_fin|date:'Y-m-d' }}">
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="mt-6 flex justify-end gap-3">
+                <a href="{% url 'reports:rep_personal' %}"
+                   class="inline-flex items-center px-5 py-2.5 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 text-sm font-semibold transition-all">
+                    <svg class="mr-2" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Limpiar
+                </a>
+                
+                <button type="submit"
+                        class="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 text-white text-sm font-bold rounded-xl shadow-lg hover:from-amber-700 hover:to-orange-700 transition-all hover:-translate-y-0.5 hover:shadow-xl">
+                    <svg class="mr-2" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    Filtrar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabla de Asistencias -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Fecha</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Entrada</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Salida</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Horas</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Estatus</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Incidencia</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-100">
+                    {% for a in asistencias %}
+                    <tr class="hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 transition-all duration-200">
+                        <!-- Fecha -->
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-shrink-0">
+                                    <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 flex flex-col items-center justify-center border border-amber-200">
+                                        <span class="text-xs font-bold text-amber-700">{{ a.fecha|date:"d" }}</span>
+                                        <span class="text-xs text-amber-600">{{ a.fecha|date:"M" }}</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900">
+                                        {{ a.fecha|date:"l" }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">{{ a.fecha|date:"Y" }}</p>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Entrada -->
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-2">
+                                <svg class="text-teal-500" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                                </svg>
+                                <span class="text-sm font-mono font-semibold text-gray-900">
+                                    {{ a.hora_entrada|time:"H:i"|default:"—" }}
+                                </span>
+                            </div>
+                        </td>
+
+                        <!-- Salida -->
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-2">
+                                <svg class="text-orange-500" style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                                <span class="text-sm font-mono font-semibold text-gray-900">
+                                    {{ a.hora_salida|time:"H:i"|default:"—" }}
+                                </span>
+                            </div>
+                        </td>
+
+                        <!-- Horas trabajadas -->
+                        <td class="px-6 py-5">
+                            {% if a.horas_trabajadas %}
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200">
+                                    <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    {{ a.horas_trabajadas }}h
+                                </span>
+                            {% else %}
+                                <span class="text-xs text-gray-400">—</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Estatus Badge -->
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            {% if a.estatus == "INHABIL" %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg 
+                                            text-xs font-semibold bg-gray-200 text-gray-800 
+                                            border border-gray-300 shadow-sm">
+                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    Día inhábil
+                                </span>
+                            {% elif a.estatus == "NORMAL" %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm">
+                                    <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Puntual
+                                </span>
+                            {% elif a.estatus == "RETARDO" %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-100 text-orange-800 border border-orange-300 shadow-sm">
+                                    <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Retardo ({{ a.minutos_retardo }} min)
+                                </span>
+                            {% elif a.estatus == "FALTA" %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-100 text-red-800 border border-red-300 shadow-sm">
+                                    <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Falta
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-300 shadow-sm">
+                                    <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Justificada
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Incidencia -->
+                        <td class="px-6 py-5 text-sm text-gray-600">
+                            {% if a.incidencia %}
+                                <span class="inline-flex items-center gap-1.5 text-xs">                 
+                                    {{ a.incidencia }}
+                                </span>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-16 text-center">
+                            <div class="mx-auto flex justify-center text-gray-300 mb-4">
+                                <svg style="width: 64px; height: 64px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                </svg>
+                            </div>
+                            <p class="text-base font-medium text-gray-700">No hay registros de asistencia</p>
+                            <p class="mt-1 text-sm text-gray-500">Ajusta los filtros de fecha para ver más resultados</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Info Box -->
+    <div class="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="text-amber-600" style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <div class="ml-3 flex-1">
+                <h3 class="text-sm font-semibold text-amber-900">Tu reporte personal</h3>
+                <div class="mt-2 text-xs text-amber-800">
+                    <p>Este reporte muestra tu historial completo de asistencias. La puntualidad se calcula automáticamente basándose en tu jornada laboral asignada.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

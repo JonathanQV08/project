@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar correo electrónico{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 text-center">
+    <div class="bg-white p-8 rounded-xl shadow">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Confirma tu correo electrónico</h2>
+
+        {% if confirmation %}
+            <p class="mb-6 text-gray-600 text-sm">
+                Por favor confirma que <strong>{{ confirmation.email_address.email }}</strong> es una dirección de correo electrónico de {{ confirmation.email_address.user }}.
+            </p>
+
+            <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                {% csrf_token %}
+                <button type="submit" 
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition mb-4">
+                    Confirmar correo electrónico
+                </button>
+            </form>
+        {% else %}
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+
+            <p class="text-gray-600 text-sm mb-6">
+                Este enlace de confirmación ha expirado o no es válido.
+            </p>
+        {% endif %}
+
+        <a href="{% url 'dashboard' %}" class="text-indigo-600 hover:text-indigo-700 font-medium text-sm">
+            Volver al dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
